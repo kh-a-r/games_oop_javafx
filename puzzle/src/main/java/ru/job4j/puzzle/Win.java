@@ -2,25 +2,26 @@ package ru.job4j.puzzle;
 
 public class Win {
     public static boolean check(int[][] board) {
-        boolean rsl = false;
-        for (int row = 0; row < board.length; row++) {
-            for (int cell = 0; cell < board[row].length; cell++) {
-                if (board[row][cell] == 1 && row == cell) {
-                    if (Win.mono(board, cell)) {
-                   // if (Win.monoVert(board, cell) || monoHorz(board, cell)) {
-                        rsl = true;
-                    }
+        boolean result = false;
+        int[] diagonal = Win.extractDiagonal(board);
+        for (int i = 0; i < board.length; i++) {
+            if (diagonal[i] == 1) {
+                if (Win.monoHorz(board, i) || Win.monoVert(board, i)) {
+                    result = true;
+                    break;
                 }
             }
+
         }
-        return rsl;
+        return result;
     }
 
-   /* public static boolean monoVert(int[][] board, int cell) {
+   public static boolean monoVert(int[][] board, int cell) {
         boolean rslMonoVert = true;
         for (int i = 0; i < board.length; i++) {
             if (board[i][cell] != 1) {
                 rslMonoVert = false;
+                break;
             }
         }
         return rslMonoVert;
@@ -28,23 +29,23 @@ public class Win {
 
     public static boolean monoHorz(int[][] board, int cell) {
         boolean rslMonoHorz = true;
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < board[cell].length; i++) {
             if (board[cell][i] != 1) {
                 rslMonoHorz = false;
+                break;
             }
         }
         return rslMonoHorz;
-    }*/
-
-    public static boolean mono(int[][] board, int cell) {
-        boolean rslMono = true;
-        for (int i = 0; i < board.length; i++) {
-            if (board[cell][i] != 1 && board[i][cell] != 1) {
-                rslMono = false;
-            }
-        }
-        return rslMono;
     }
+
+    public static int[] extractDiagonal(int[][] board) {
+        int[] result = new int[board.length];
+        for (int row = 0; row < board.length; row++) {
+            result[row] = board[row][row];
+        }
+        return result;
+    }
+
 
 
     public static void main(String[] args) {
